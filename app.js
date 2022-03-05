@@ -19,7 +19,6 @@
             this.avatar = avatar;
         }
     }
-    
     // Give Human Object values from user input
     btn.addEventListener("click", function()
     {
@@ -29,42 +28,51 @@
         human.weight = document.querySelector("#weight").value;
         human.diet = document.querySelector("#diet").value;   
     })
-
     //Make the Grid output and set human object in the middle
     btn.addEventListener("click", function()
     {
         shuffleArray(saurier)
         for(let i = 0; i<saurier.length; i++)
         {
-        const infoCard = document.createElement("div");
-        const imgContainer = document.createElement("img");
-        const factContainer = document.createElement("p");
+        //Create Elements
+        let infoCard = document.createElement("div");
+        let imgContainer = document.createElement("img");
+        let factContainer = document.createElement("p");
+        let dinoHeader = document.createElement("h4");
+        //set attributes of created elements
+        dinoHeader.innerText = saurier[i].species;
         factContainer.innerText= saurier[i].fact;
         imgContainer.setAttribute("src", saurier[i].avatar);
         infoCard.setAttribute("class", "grid-item");
-        infoCard.innerText = saurier[i].species;
+        //append elements to infocard and infocard to maingrid
+        infoCard.appendChild(dinoHeader);
         infoCard.appendChild(imgContainer);
         infoCard.appendChild(factContainer);
         mainGrid.appendChild(infoCard);
         }
         //set human in the middle
-        const infoCard = document.createElement("div");
-        infoCard.setAttribute("class", "grid-item");
+        //create Elements
+        let infoCard = document.createElement("div");
         let imgContainer = document.createElement("img");
         let factContainer = document.createElement("p");
-        factContainer.innerText = "Hallo Mensch";
-        infoCard.appendChild(factContainer);
+        let humanHeader = document.createElement("h4");
+        //set attributes of created elements
+        humanHeader.style.color = "black"
+        humanHeader.innerText = `Human: ${human.name}`;
+        infoCard.setAttribute("class", "grid-item");
         imgContainer.setAttribute("src", "images/human.png");
+        factContainer.innerText = compareMethodHeight() + compareMethodWeight() + compareMethodeDiet();
+        //append all elements to infocard and infocard to maingrid
+        infoCard.appendChild(humanHeader);
+        infoCard.appendChild(factContainer);
         infoCard.appendChild(imgContainer);
         mainGrid.appendChild(infoCard);
+        //change position of childnode to set human in the middle
         let fullNode = document.getElementById("grid").childNodes;
         fullNode[8].parentNode.insertBefore(fullNode[8], fullNode[4]);
+        //remove form from display
         form.style.display = "none";
-        compareMethodWeight()
-
     })
-
-
     // Use IIFE taso get human data from form
     //Import all Dinos from JSON Data 
     fetch("dino.json").then((response) =>{
@@ -79,59 +87,50 @@
            saurier[i] = new CreateDino(saurier[i])
        }
        });
-
        //Make the dinos random
        function shuffleArray(inputArray){
         inputArray.sort(()=> Math.random() - 0.5);
     }
-    
-    
-    
-    
     // Create Dino Compare Method 1
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-    function compareMethodWeight()
-    {
-        let humanWeight;
-        if(human.inches)
-        {
-            humanWeight = human.feet/30.48
-        }
-        else if(human.feet)
-        {
-            humanWeight = human.inches*2.54
-        }
-        let counter=0;
-        for(let i=0; i<saurier.length;i++)
-        {
-            if(humanWeight > saurier[i].weight)
-            {
-                counter++;
-            }
-        }
-        return `you are weigh more than ${counter} Dinosaurs.`;
-    } 
-
-    
-    // Create Dino Compare Method 2
     // NOTE: Weight in JSON file is in lbs, height in inches.
     function compareMethodHeight()
     {
         let counter=0;
-        for(let i=0; i<saurier.length;i++)
+        for (let i=0; i<saurier.length;i++)
         {
-            if(human.height > saurier[i].height)
+            if(human.inches>saurier[i].height)
             {
                 counter++;
             }
         }
-        return `you are bigger than ${counter} Dinosaurs.`;
-    } 
-    
+        return `You are bigger than ${counter} Dinosaurs.`;
+    }
+    // Create Dino Compare Method 2
+    // NOTE: Weight in JSON file is in lbs, height in inches.
+    function compareMethodWeight()
+    {
+        let counter=0;
+        for(let i=0; i<saurier.length;i++)
+        {
+            if(human.weight > saurier[i].weight)
+            {
+                counter++;
+            }
+        }
+        return `You'r weigh more than ${counter} Dinosaurs.`;
+    }
     // Create Dino Compare Method 3
     // NOTE: Weight in JSON file is in lbs, height in inches.
-
-
+    function compareMethodeDiet()
+    {
+        let counter = 0;
+        for(let i=0;i<saurier.length;i++)
+        {
+            if(human.diet===saurier[i].diet)
+            counter++;
+        }
+        return `You share the same diet as ${counter} Dinosaurs.`
+    }
     // Generate Tiles for each Dino in Array
   
         // Add tiles to DOM
