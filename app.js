@@ -61,7 +61,8 @@
         humanHeader.innerText = `Human: ${human.name}`;
         infoCard.setAttribute("class", "grid-item");
         imgContainer.setAttribute("src", "images/human.png");
-        factContainer.innerText = compareMethodHeight() + compareMethodWeight() + compareMethodeDiet();
+        factContainer.innerText = `Weight: ${human.weight} lbs. Height: ${human.inches} inches and ${human.feet} 
+        feet. Diet: ${human.diet}. ${compareMethodHeight()} ${compareMethodWeight()} ${compareMethodeDiet()}`;
         //append all elements to infocard and infocard to maingrid
         infoCard.appendChild(humanHeader);
         infoCard.appendChild(factContainer);
@@ -138,4 +139,21 @@
     // Remove form from screen
 
 
-// On button click, prepare and display infographic
+// eventlistener to add a refresh button on the page
+btn.addEventListener("click", function()
+{
+    //get element where to append the refresher
+    let body = document.querySelector("body");
+    let node = body.childNodes;
+    //node[17].insertBefore(node[8], node[9]);
+    
+    //Create Element
+    let refresherElem = document.createElement("div");
+    //set attributes
+    refresherElem.setAttribute("class", "refresher");
+    body.appendChild(refresherElem);
+    refresherElem.insertBefore(refresherElem, node[8]);
+
+
+})
+
