@@ -31,35 +31,42 @@
     //Make the Grid output and set human object in the middle
     btn.addEventListener("click", function()
     {
-        shuffleArray(saurier)
+        shuffleArray(saurier);
+        shuffleObject(saurier);
         for(let i = 0; i<saurier.length; i++)
         {
         //Create Elements
         let infoCard = document.createElement("div");
         let imgContainer = document.createElement("img");
+        let details = document.createElement("h5");
         let factContainer = document.createElement("p");
-        let dinoHeader = document.createElement("h4");
+        let dinoHeader = document.createElement("h2");
         //set attributes of created elements
-        dinoHeader.innerText = saurier[i].species;
-        factContainer.innerText= saurier[i].fact;
+        details.innerText = `Weight: ${saurier[i].weight} lbs. Height: ${saurier[i].height} inches.
+        Diet: ${saurier[i].diet}. Where: ${saurier[i].where}. When: ${saurier.when}`;
+        dinoHeader.innerText = `Species: ${saurier[i].species}`;
+        factContainer.innerText= saurier[i].fact[0];
         imgContainer.setAttribute("src", saurier[i].avatar);
         infoCard.setAttribute("class", "grid-item");
         //append elements to infocard and infocard to maingrid
         infoCard.appendChild(dinoHeader);
+        infoCard.appendChild(details)
         infoCard.appendChild(imgContainer);
         infoCard.appendChild(factContainer);
         mainGrid.appendChild(infoCard);
         }
-        //set human in the middle
-        //create Elements
+        /*create and set human in the middle
+        create Elements*/
         let infoCard = document.createElement("div");
         let imgContainer = document.createElement("img");
         let factContainer = document.createElement("p");
-        let humanHeader = document.createElement("h4");
+        let humanHeader = document.createElement("h3");
         //set attributes of created elements
-        humanHeader.style.color = "black"
+        humanHeader.style.color = "black";
         humanHeader.innerText = `Human: ${human.name}`;
+        factContainer.setAttribute("class", "human")
         infoCard.setAttribute("class", "grid-item");
+        infoCard.setAttribute("id", "humanDinoCompare")
         imgContainer.setAttribute("src", "images/human.png");
         factContainer.innerText = `Weight: ${human.weight} lbs. Height: ${human.inches} inches and ${human.feet} 
         feet. Diet: ${human.diet}. ${compareMethodHeight()} ${compareMethodWeight()} ${compareMethodeDiet()}`;
@@ -74,14 +81,12 @@
         //remove form from display
         form.style.display = "none";
     })
-    // Use IIFE taso get human data from form
     //Import all Dinos from JSON Data 
     fetch("dino.json").then((response) =>{
         return response.json();
     })
     .then((dino) => {
         saurier = dino
-        console.log(saurier)
         //make all dinos to a object of CreateDino Class
        for(var i = 0; i<=saurier.lenght; i++)
        {
@@ -91,6 +96,15 @@
        //Make the dinos random
        function shuffleArray(inputArray){
         inputArray.sort(()=> Math.random() - 0.5);
+    }
+    
+    function shuffleObject(inputArray){
+        for(let i=0;i<saurier.length; i++)
+        {
+            inputArray[i].fact.sort(()=>Math.random() -0.5)
+            
+        }
+        
     }
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches.
@@ -132,28 +146,19 @@
         }
         return `You share the same diet as ${counter} Dinosaurs.`
     }
-    // Generate Tiles for each Dino in Array
-  
-        // Add tiles to DOM
-
-    // Remove form from screen
-
-
 // eventlistener to add a refresh button on the page
 btn.addEventListener("click", function()
 {
-    //get element where to append the refresher
-    let body = document.querySelector("body");
-    let node = body.childNodes;
-    //node[17].insertBefore(node[8], node[9]);
-    
-    //Create Element
-    let refresherElem = document.createElement("div");
-    //set attributes
-    refresherElem.setAttribute("class", "refresher");
-    body.appendChild(refresherElem);
-    refresherElem.insertBefore(refresherElem, node[8]);
-
-
+    //get position of Element where the Refresher will be appended
+    let el = document.getElementById("topHead");
+    //create refresher with properties and functions
+    let refersherEl = document.createElement("div");
+    refersherEl.setAttribute("class", "refresher");
+    refersherEl.innerText = "Refresh Comparing";
+    el.appendChild(refersherEl);
+    //Click-Event to reload the Form for a new user input
+    refersherEl.addEventListener("click", function()
+    {
+        location.reload();
+    })
 })
-

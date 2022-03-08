@@ -71,10 +71,16 @@ p {
     overflow: hidden;
 }
 
+#humanDinoCompare > p{
+    color: Black;
+    background-color: transparent;
+}
+
 .grid-item {
     position: relative;
     box-sizing: border-box;
     width: 33.33%;
+    overflow: hidden;
 }
 
 .grid-item:nth-child(1){
