@@ -96,8 +96,8 @@
        //Make the dinos random
        function shuffleArray(inputArray){
         inputArray.sort(()=> Math.random() - 0.5);
-    }
-    
+    }  
+    //Make facts random
     function shuffleObject(inputArray){
         for(let i=0;i<saurier.length; i++)
         {
