@@ -76,11 +76,6 @@ p {
     background-color: transparent;
 }
 
-.human{
-    color: Black;
-    background-color: transparent;
-}
-
 .grid-item {
     position: relative;
     box-sizing: border-box;
