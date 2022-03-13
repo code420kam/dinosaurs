@@ -31,6 +31,9 @@
     //Make the Grid output and set human object in the middle
     btn.addEventListener("click", function()
     {
+        compareMethodHeight();
+        compareMethodWeight();
+        compareMethodeDiet();
         shuffleArray(saurier);
         shuffleObject(saurier);
         for(let i = 0; i<saurier.length; i++)
@@ -43,7 +46,7 @@
         let dinoHeader = document.createElement("h2");
         //set attributes of created elements
         details.innerText = `Weight: ${saurier[i].weight} lbs. Height: ${saurier[i].height} inches.
-        Diet: ${saurier[i].diet}. Where: ${saurier[i].where}. When: ${saurier.when}`;
+        Diet: ${saurier[i].diet}. Where: ${saurier[i].where}. When: ${saurier[i].when}`;
         dinoHeader.innerText = `Species: ${saurier[i].species}`;
         factContainer.innerText= saurier[i].fact[0];
         imgContainer.setAttribute("src", saurier[i].avatar);
@@ -68,8 +71,7 @@
         infoCard.setAttribute("class", "grid-item");
         infoCard.setAttribute("id", "humanDinoCompare")
         imgContainer.setAttribute("src", "images/human.png");
-        factContainer.innerText = `Weight: ${human.weight} lbs. Height: ${human.inches} inches and ${human.feet} 
-        feet. Diet: ${human.diet}. ${compareMethodHeight()} ${compareMethodWeight()} ${compareMethodeDiet()}`;
+        factContainer.innerText = "";
         //append all elements to infocard and infocard to maingrid
         infoCard.appendChild(humanHeader);
         infoCard.appendChild(factContainer);
@@ -78,6 +80,19 @@
         //change position of childnode to set human in the middle
         let fullNode = document.getElementById("grid").childNodes;
         fullNode[8].parentNode.insertBefore(fullNode[8], fullNode[4]);
+        //add Eventlistener to show Details of Human
+        let humanEvent = document.getElementById("humanDinoCompare");
+        humanEvent.addEventListener("click", function()
+        {
+            if(factContainer.innerText === "")
+            {
+                factContainer.innerText = `Weight: ${human.weight} lbs. Height: ${human.inches} inches and ${human.feet} feet. Diet: ${human.diet}.`;
+            }
+            else
+            {
+            factContainer.innerText = "";
+            }
+        })
         //remove form from display
         form.style.display = "none";
     })
@@ -95,57 +110,82 @@
        });
        //Make the dinos random
        function shuffleArray(inputArray){
-        inputArray.sort(()=> Math.random() - 0.5);
+        inputArray.sort(()=> Math.floor(Math.random()-0.5));
     }  
+    
     //Make facts random
-    function shuffleObject(inputArray){
+    function shuffleObject(inputArray)
+    {
         for(let i=0;i<saurier.length; i++)
         {
-            inputArray[i].fact.sort(()=>Math.random() -0.5)
             
-        }
-        
+            inputArray[i].fact.sort(()=>Math.floor(Math.random()-0.5));
+            
+        }   
     }
+    
+
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches.
     function compareMethodHeight()
     {
-        let counter=0;
         for (let i=0; i<saurier.length;i++)
         {
-            if(human.inches>saurier[i].height)
+            if (saurier[i].species === "Pigeon")
             {
-                counter++;
+                continue;
+            }
+            else if(saurier[i].height>human.inches)
+            {
+                let result = saurier[i].height-human.inches;
+                saurier[i].fact.push(`You are ${result} inches taller than ${saurier[i].species}`)
+            }
+            else if(human.inches>saurier[i].height)
+            {
+                let result = human.inches-saurier[i].height;
+                saurier[i].fact.push(`You are ${result} inches bigger than ${saurier[i].species}`)
+                
             }
         }
-        return `You are bigger than ${counter} Dinosaurs.`;
     }
     // Create Dino Compare Method 2
     // NOTE: Weight in JSON file is in lbs, height in inches.
     function compareMethodWeight()
     {
-        let counter=0;
-        for(let i=0; i<saurier.length;i++)
+        for (let i=0; i<saurier.length;i++)
         {
-            if(human.weight > saurier[i].weight)
+            if (saurier[i].species === "Pigeon")
             {
-                counter++;
+                continue;
             }
-        }
-        return `You'r weigh more than ${counter} Dinosaurs.`;
+            else if(saurier[i].weight>human.weight)
+            {
+                let result = saurier[i].weight-human.weight;
+                saurier[i].fact.push(`You weight ${result} lbs less than ${saurier[i].species}`)
+            }
+            else if(human.weight>saurier[i].weight)
+            {
+                let result = human.weight-saurier[i].weight;
+                saurier[i].fact.push(`You weight ${result} lbs more than ${saurier[i].species}`)
+                
+            }
     }
+}
     // Create Dino Compare Method 3
     // NOTE: Weight in JSON file is in lbs, height in inches.
     function compareMethodeDiet()
     {
-        let counter = 0;
-        for(let i=0;i<saurier.length;i++)
+        for (let i=0; i<saurier.length;i++)
         {
-            if(human.diet===saurier[i].diet)
-            counter++;
-        }
-        return `You share the same diet as ${counter} Dinosaurs.`
-    }
+            if (saurier[i].species === "Pigeon")
+            {
+                continue;
+            }
+            else if(saurier[i].diet===human.diet)
+            {
+                saurier[i].fact.push(`You share the same Diet with ${saurier[i].species}`)
+            }
+    }}
 // eventlistener to add a refresh button on the page
 btn.addEventListener("click", function()
 {
